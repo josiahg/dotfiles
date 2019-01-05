@@ -1,3 +1,5 @@
 # dotfiles
 
-Repository to track my dotfiles. Currently work on OS X Mojave (10.14)
+Repository to track my dotfiles. 
+
+These files are in use on OS X Mojave.
