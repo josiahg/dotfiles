@@ -2,4 +2,4 @@
 
 Repository to track my dotfiles. 
 
-These files are in use on OS X Mojave.
+These files are in use on macOS Catalina.
