@@ -10,9 +10,22 @@ set showmode			        " Display current mode at bottom
 set gcr=a:blinkon0		        " Disable cursor blink
 set visualbell			        " No sounds
 set autoread			        " Reload files changed outside vim
+set rnu                         " Relative numbers
+set nu                          " Show numbers
+set noshowmatch
+set autowrite
+"
+" change <leader> from \ to ,
+let mapleader=","
 
 " Turn on syntax highlighting
 syntax on
+
+" Faster UI refresh
+set updatetime=50
+
+" set colorcolumn=80
+" highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " == Indentation ==
 set autoindent
@@ -66,9 +79,65 @@ set sidescroll=1
 " == Search ==
 
 set incsearch " Find the next match as we type the search
-set hlsearch " highlight searches by default
+set nohlsearch " highlight searches by default
 set ignorecase " ignore case when searching
 set smartcase " ... unless we type a capital
 
 " == File browser ==
 let g:netrw_banner = 0
+
+" Plugins
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+"call plug#begin('~/.vim/plugged')
+"
+"Plug 'gruvbox-community/gruvbox'
+"Plug 'sainnhe/gruvbox-material'
+"Plug 'phanviet/vim-monokai-pro'
+"Plug 'vimairline/vim-airline'
+"Plug 'flazz/vim-colorschemes'
+"
+"call plug#end()
+"
+let g:gruvbox_contrast_dark = 'hard'
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+let g:gruvbox_invert_selection='0'
+
+let g:airline_theme='minimalist'
+
+autocmd vimenter * colorscheme molokai
+
+" golang stuff
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+map <leader>a :cclose<CR>
+
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+let g:go_fmt_command = "goimports"
+
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+nmap <C-g> :GoDeclsDir<cr>
+imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
+
+"let g:go_highlight_types = 1
+"let g:go_highlight_functions = 1
+"let g:go_highlight_function_calls = 1
