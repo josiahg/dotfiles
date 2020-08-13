@@ -87,17 +87,30 @@ set smartcase " ... unless we type a capital
 let g:netrw_banner = 0
 
 " Plugins
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-"call plug#begin('~/.vim/plugged')
-"
-"Plug 'gruvbox-community/gruvbox'
-"Plug 'sainnhe/gruvbox-material'
-"Plug 'phanviet/vim-monokai-pro'
-"Plug 'vimairline/vim-airline'
-"Plug 'flazz/vim-colorschemes'
-"
-"call plug#end()
-"
+
+" Auto install vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'gruvbox-community/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+Plug 'phanviet/vim-monokai-pro'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'flazz/vim-colorschemes'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
+Plug 'ctrlpvim/ctrlp.vim'
+
+call plug#end()
+
+set runtimepath^=~/.vim/plugged/ctrlp.vim
+
 let g:gruvbox_contrast_dark = 'hard'
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -141,3 +154,5 @@ imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
 "let g:go_highlight_types = 1
 "let g:go_highlight_functions = 1
 "let g:go_highlight_function_calls = 1
+
+set omnifunc=syntaxcomplete#Complete
